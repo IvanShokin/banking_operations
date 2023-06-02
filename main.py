@@ -17,11 +17,15 @@ def print_operation_info(operation):
 ''')
 
 
-with open(config.OPERATIONS_FILE_PATH, 'r', encoding='utf-8') as operations_json:
-    operations: list = json.load(operations_json)
-    operations = list(filter(lambda x: bool(x) and x.get("state") == 'EXECUTED', operations))
-    operations.sort(
-        key=lambda value: datetime.datetime.strptime(value['date'], config.DATE_FORMAT),
-        reverse=True
-    )
-    list(map(print_operation_info, operations[:config.WINDOW_SIZE]))
+def get_last_operation():
+    with open(config.OPERATIONS_FILE_PATH, 'r', encoding='utf-8') as operations_json:
+        operations: list = json.load(operations_json)
+        operations = list(filter(lambda x: bool(x) and x.get("state") == 'EXECUTED', operations))
+        operations.sort(
+            key=lambda value: datetime.datetime.strptime(value['date'], config.DATE_FORMAT),
+            reverse=True
+        )
+        list(map(print_operation_info, operations[:config.WINDOW_SIZE]))
+
+
+get_last_operation()
